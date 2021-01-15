@@ -1,0 +1,55 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="config.js"></script>
+</head>
+<body>
+    <h1 class="display-4 text-center m-5"> Serverless Store </h1>
+    <h3 class="text-center m-2"> Create item </h1>
+    <br>
+  <div class="container">
+    <form onsubmit='onSubmit(this); return false'>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Item's name">
+      </div>
+      <div class="form-group">
+        <label for="stock">Description</label>
+        <input type="text" class="form-control" id="desc" placeholder="Description">
+      </div>
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input type="text" class="form-control" id="stock" placeholder="Available stock">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <script>
+    function onSubmit( form ){
+      var url = baseUrl+"items/"
+      var params = {
+        "name": form.name.value,
+        "description": form.desc.value,
+        "stock": parseInt(form.stock.value)
+      }
+      console.log( params);
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(function(response) {
+        if(response.status === 200){
+          console.log("ok")
+          window.location.href = "index.html";
+        }
+        else {
+          console.log(response)
+        }
+      })
+    }
+  </script>
+</body>
+</html>

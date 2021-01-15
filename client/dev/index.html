@@ -1,0 +1,92 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="config.js"></script>
+
+</head>
+<body>
+  <h1 class="display-4 text-center m-5"> Serverless Store </h1>
+  <p class="display-6 text-center m-5"> <a href="create.html">Create new item </a></p>
+  <div id="items" class="text-center"> <p id="loading"> Loading </p> </div>
+
+  <script>
+  function checkout(id){
+    console.log('checkout '+id)
+    fetch(baseUrl+'items/'+id+'/checkout')
+      .then(function(response) {
+        if(response.status === 200){
+          loadElements()
+        }
+        else{
+          console.log('error with '+id)
+        }
+      })
+
+  }
+
+  function setElements(element,index,array) {
+    var parent = document.getElementById("items");
+
+    var card = document.createElement("div");
+    var card_body = document.createElement("div");
+    var card_title = document.createElement("h5");
+    var card_sub = document.createElement("h6");
+    var card_text = document.createElement("p");
+    var a = document.createElement('a');
+
+    a.appendChild(document.createTextNode('Comprar'));
+    a.title = "Checkout "+element.name;
+    a.href = "#"
+    a.onclick = function(){checkout(element.id)}
+    a.className = "card-link"
+
+    card_text.appendChild(document.createTextNode(element.desc));
+    card_text.className = "card-text"
+
+    card_title.appendChild(document.createTextNode(element.name));
+    card_title.className = "card-title"
+
+    card_sub.appendChild(document.createTextNode("stock - "+element.stock));
+    card_sub.className = "card-subtitle mb-2 text-muted "
+
+    card_body.className = "card-body"
+    card_body.appendChild(card_title);
+    card_body.appendChild(card_text);
+    card_body.appendChild(card_sub);
+    if(element.stock > 0){
+      card_body.appendChild(a);
+    }
+
+    card.className = "d-inline-flex m-2 card"
+    card.appendChild(card_body);
+
+    document.getElementById("loading").style.display = "none";
+    parent.appendChild(card)
+
+  };
+
+  function loadElements(){
+    var parent = document.getElementById("items");
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    var loading = document.createElement("p");
+    loading.id = "loading"
+    loading.appendChild(document.createTextNode("Loading..."));
+
+    parent.appendChild(loading)
+
+    fetch(baseUrl+'items/')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(responseJson) {
+        responseJson.forEach(setElements)
+    })
+  }
+
+  loadElements();
+
+  </script>
+</body>
+</html>

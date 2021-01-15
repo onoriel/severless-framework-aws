@@ -1,0 +1,19 @@
+{
+  "name": "serverless-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.38",
+    "serverless-finch": "^2.4.2",
+    "serverless-offline": "^5.5.0"
+  },
+  "dependencies": {
+    "uuid": "^3.3.2"
+  }
+}
